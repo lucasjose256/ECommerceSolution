@@ -11,7 +11,7 @@ public class PrincipalDbContext:DbContext
         public DbSet<ItemPedido> ItensPedidos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
+        {   
             optionsBuilder.UseSqlite("Data Source=Ecomerce.sqlite");
             base.OnConfiguring(optionsBuilder);
         }

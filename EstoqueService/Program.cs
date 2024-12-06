@@ -1,3 +1,5 @@
+using Classes;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,29 +18,20 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+
+
+List<Produto> produtosLista=  new List<Produto> {
+    new Produto { Id = 1, Nome = "Notebook", Preco = 3500.00m, Estoque = 10, ImagemUrl = "https://example.com/notebook.jpg" },
+    new Produto { Id = 2, Nome = "Smartphone", Preco = 2500.00m, Estoque = 20, ImagemUrl = "https://example.com/smartphone.jpg" },
+    new Produto { Id = 3, Nome = "Headset", Preco = 300.00m, Estoque = 50, ImagemUrl = "https://example.com/headset.jpg" },
+    new Produto { Id = 4, Nome = "Teclado Mecânico", Preco = 450.00m, Estoque = 15, ImagemUrl = "https://example.com/teclado.jpg" }
 };
 
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
-
+app.MapGet("/estoque", () =>
+{
+return produtosLista;
+    
+});
+  
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

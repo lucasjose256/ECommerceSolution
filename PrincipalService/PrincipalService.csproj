@@ -21,4 +21,33 @@
       <ProjectReference Include="..\Classes\Classes.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Ecomerce.sqlite" />
+      <None Remove="Migrations\**" />
+      <None Remove="Controllers\**" />
+      <None Remove="Routes\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Migrations\**" />
+      <Compile Remove="Controllers\**" />
+      <Compile Remove="Routes\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Migrations\**" />
+      <EmbeddedResource Remove="Controllers\**" />
+      <EmbeddedResource Remove="Routes\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Migrations\**" />
+      <Content Remove="Controllers\**" />
+      <Content Remove="Routes\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controller\" />
+    </ItemGroup>
+
 </Project>
