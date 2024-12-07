@@ -160,3 +160,4 @@
 /Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/bin/Debug/net8.0/Classes.dll
 /Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/bin/Debug/net8.0/Classes.pdb
 /Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/obj/Debug/net8.0/PrincipalService.sourcelink.json
+/Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/bin/Debug/net8.0/RabbitMQ.Client.dll

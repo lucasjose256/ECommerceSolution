@@ -12,11 +12,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+builder.Services.AddHttpClient();
 
 // Adiciona a documentação Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 app.UseCors("AllowAllOrigins");
 // Configura o middleware Swagger para desenvolvimento
@@ -26,7 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.PrincipalRoutes(app.Services.GetRequiredService<HttpClient>());
 
 
 app.UseHttpsRedirection();
