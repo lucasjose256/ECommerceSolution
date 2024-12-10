@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XtA5Gq9Nh4A=",
+  "dgSpecHash": "+X2j5Yg3+GQ=",
   "success": true,
   "projectFilePath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/PrincipalService.csproj",
   "expectedPackageFiles": [
@@ -36,6 +36,7 @@
     "/Users/lucasbarszcz/.nuget/packages/microsoft.extensions.primitives/9.0.0/microsoft.extensions.primitives.9.0.0.nupkg.sha512",
     "/Users/lucasbarszcz/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
     "/Users/lucasbarszcz/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/Users/lucasbarszcz/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/Users/lucasbarszcz/.nuget/packages/rabbitmq.client/7.0.0/rabbitmq.client.7.0.0.nupkg.sha512",
     "/Users/lucasbarszcz/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "/Users/lucasbarszcz/.nuget/packages/sqlitepclraw.core/2.1.10/sqlitepclraw.core.2.1.10.nupkg.sha512",

@@ -1,3 +1,10 @@
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PagamentoService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +20,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+Task.Run(() =>
+{
+});
+PagamentoRoute.Consume();
 
 app.UseHttpsRedirection();
 app.Run();

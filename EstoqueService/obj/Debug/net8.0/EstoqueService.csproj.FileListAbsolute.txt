@@ -160,3 +160,5 @@
 /Users/lucasbarszcz/RiderProjects/ECommerceSolution/EstoqueService/bin/Debug/net8.0/Classes.dll
 /Users/lucasbarszcz/RiderProjects/ECommerceSolution/EstoqueService/bin/Debug/net8.0/Classes.pdb
 /Users/lucasbarszcz/RiderProjects/ECommerceSolution/EstoqueService/obj/Debug/net8.0/EstoqueService.sourcelink.json
+/Users/lucasbarszcz/RiderProjects/ECommerceSolution/EstoqueService/bin/Debug/net8.0/RabbitMQ.Client.dll
+/Users/lucasbarszcz/RiderProjects/ECommerceSolution/EstoqueService/bin/Debug/net8.0/Newtonsoft.Json.dll

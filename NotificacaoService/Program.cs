@@ -1,44 +1,75 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using System.Text;
+using System.Threading.Channels;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Canal de comunicação para SSE
+var notificacaoChannel = Channel.CreateUnbounded<string>();
+
+// Configuração do RabbitMQ
+const string rabbitMqHost = "localhost";
+string[] topicos = { "pedidos_criados", "pagamentos_aprovados", "pagamentos_recusados", "pedidos_enviados" };
+
+// Conexão assíncrona com RabbitMQ e consumo de mensagens
+Task.Run(async () =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    var factory = new ConnectionFactory() { HostName = rabbitMqHost };
 
-app.UseHttpsRedirection();
+    // Conexão assíncrona com RabbitMQ
+    var connection = await factory.CreateConnectionAsync();
+    var channel = await connection.CreateChannelAsync();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
+    foreach (var topico in topicos)
     {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();
+        // Declaração de filas
+        await channel.QueueDeclareAsync(
+            queue: topico,
+            durable: true,
+            exclusive: false,
+            autoDelete: false,
+            arguments: null);
+
+        var consumer = new AsyncEventingBasicConsumer(channel);
+
+        consumer.ReceivedAsync += async (model, ea) =>
+        {
+            var body = ea.Body.ToArray();
+            var mensagem = Encoding.UTF8.GetString(body);
+            Console.WriteLine($"Mensagem recebida do tópico '{topico}': {mensagem}");
+
+            // Adiciona a mensagem ao canal SSE
+            await notificacaoChannel.Writer.WriteAsync(mensagem);
+        };
+
+        await channel.BasicConsumeAsync(
+            queue: topico,
+            autoAck: true,
+            consumer: consumer);
+
+        Console.WriteLine($"Consumindo mensagens do tópico: {topico}");
+    }
+
+    Console.WriteLine("RabbitMQ consumidor ativo...");
+    await Task.Delay(-1); // Mantém a tarefa ativa indefinidamente
+});
+
+// Endpoint SSE para envio de notificações ao frontend
+app.MapGet("/sse", async (HttpContext context) =>
+{
+    context.Response.Headers.Add("Content-Type", "text/event-stream");
+    var writer = context.Response.BodyWriter;
+
+    await foreach (var mensagem in notificacaoChannel.Reader.ReadAllAsync())
+    {
+        var data = $"data: {mensagem}\n\n";
+        await writer.WriteAsync(Encoding.UTF8.GetBytes(data));
+        await writer.FlushAsync();
+    }
+});
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

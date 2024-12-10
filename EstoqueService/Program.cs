@@ -1,4 +1,5 @@
 using Classes;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-
 List<Produto> produtosLista=  new List<Produto> {
     new Produto { Id = 1, Nome = "Notebook", Preco = 3500.00m, Estoque = 10, ImagemUrl = "https://example.com/notebook.jpg" },
     new Produto { Id = 2, Nome = "Smartphone", Preco = 2500.00m, Estoque = 20, ImagemUrl = "https://example.com/smartphone.jpg" },
@@ -32,6 +32,9 @@ app.MapGet("/estoque", () =>
 return produtosLista;
     
 });
-  
+RabbitMqHelper.ConsumeMessageEstoque("Pedidos-Criados", produtosLista);
+
+
 app.Run();
+
 

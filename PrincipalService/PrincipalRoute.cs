@@ -4,27 +4,24 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
 using Classes;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 namespace PrincipalService;
 
 public static class PrincipalRoute
 {
+   
+
+    
+    // Função para publicar mensagem
+   
+ 
     public static List<ItemPedido> cart = new List<ItemPedido>();
 
     public static List<Produto> produtos = new List<Produto>();
     public static List<Pedido> pedidos = new List<Pedido>();
-    static int idCounter = 1;
-/*
-    static void PublishToQueue(string queueName, string message)
-    {
-        var factory = new ConnectionFactory() { HostName = "localhost" };
-        using var connection = factory.CreateConnection();
-        using var channel = connection.CreateModel();
-        channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
-
-        var body = Encoding.UTF8.GetBytes(message);
-        channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
-    }*/
+    static int idCounter = 0;
     public static void PrincipalRoutes(this WebApplication app,  HttpClient httpClient)
     {
         // Endpoint para carregar produtos da API externa
@@ -38,9 +35,8 @@ public static class PrincipalRoute
                 // Verifica se a resposta foi bem-sucedida
                 if (response.IsSuccessStatusCode)
                 {
-                    // Lê o conteúdo da resposta e faz o parse para uma lista de produtos
                      produtos = await response.Content.ReadFromJsonAsync<List<Produto>>();
-                    return Results.Ok(produtos); // Retorna os produtos para o cliente
+                    return Results.Ok(produtos); 
                 }
                 else
                 {
@@ -53,23 +49,17 @@ public static class PrincipalRoute
             }
         });
             
-        // Endpoint para adicionar um item ao carrinho
         app.MapPost("/cart/{produtoId}", async ([FromBody] ItemResponse item) =>
         {
-            // Busca o produto pelo ID
             var produto = produtos.FirstOrDefault(p => p.Id == item.ProdutoId);
             if (produto == null)
             {
                 return Results.NotFound(new { mensagem = "Produto não encontrado." });
             }
-
-            // Verifica se há estoque suficiente
             if (produto.Estoque < item.Quantidade)
             {
                 return Results.BadRequest(new { mensagem = "Estoque insuficiente." });
             }
-
-            // Atualiza o estoque do produto
             produto.Estoque -= item.Quantidade;
             //chamar a api de estoque para mudar o valor
             //ou usar os eventos
@@ -81,9 +71,7 @@ public static class PrincipalRoute
                 itemExistente.Quantidade += item.Quantidade;
             }
             else
-            {
-                // Se o item não existe no carrinho, adiciona um novo item
-                cart.Add(new ItemPedido
+            { cart.Add(new ItemPedido
                 {
                     ProdutoId = item.ProdutoId,
                     NomeProduto = produto.Nome,
@@ -92,7 +80,6 @@ public static class PrincipalRoute
                 });
             }
 
-            // Retorna sucesso com a mensagem
             return Results.Ok(new { mensagem = "Produto adicionado ao carrinho." });
         });
         app.MapDelete("/cart/{id}", (int id) =>
@@ -101,7 +88,7 @@ public static class PrincipalRoute
             if (item is null) return Results.NotFound("Item não encontrado.");
 
             cart.Remove(item);
-            //    PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
+               //PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
 
             return Results.NoContent();
         });
@@ -119,11 +106,19 @@ public static class PrincipalRoute
             return pedido is not null ? Results.Ok(pedido) : Results.NotFound("Pedido não encontrado.");
         });
 
+        
         app.MapPost("/criar-pedido",async (Pedido novoPedido) =>
         {
+            //precisa alterar a logica do contador pq ele modifica o id e cria outro intem na lista
+
+
             novoPedido.PedidoId = idCounter++;
             novoPedido.DataPedido = DateTime.Now;
             novoPedido.Status = "criado";
+            string pedidoJson = JsonSerializer.Serialize(novoPedido);
+
+            await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
+
             pedidos.Add(novoPedido);
 
             // Publica evento no RabbitMQ
@@ -153,9 +148,36 @@ public static class PrincipalRoute
 
             return Results.NoContent();
         });
+        string ProcessarPagamentoAleatoriamente()
+        {
+            var random = new Random();
+            // 50% de chance de pagamento aprovado ou recusado
+            return random.Next(2) == 0 ? "Aprovado" : "Recusado";
+        }
+        
+        app.MapPost("/pagamentos/{id}", async ( int id, Pagamento pedido) =>
+        {
+            
+            var pedidoeEncontrado = pedidos.FirstOrDefault(p => p.PedidoId == id);
+            if (pedido is null) return Results.NotFound("Pedido não encontrado.");
+
+            pedidoeEncontrado.Status = pedido.status;
+            //    PublishToQueue("Pedidos_Atualizados", JsonSerializer.Serialize(pedido));
+            
+
+            return Results.Ok(pedido);
+        });
 
 
     }
+}
+
+public class Pagamento
+{
+    public int PedidoId { get; set; }
+    public string status { get; set; }
+    public decimal valor { get; set; }
+
 }
 public class ItemResponse
 {
