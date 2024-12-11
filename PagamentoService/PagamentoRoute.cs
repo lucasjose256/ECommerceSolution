@@ -11,7 +11,8 @@ using RabbitMQ.Client.Events;
 namespace PagamentoService
 {
     public static class PagamentoRoute
-    {
+    {    public static string exchangeName = "pedidos-exchange";
+
         public static async Task ProcessarPedidoAsync(Pedido pedido)
         {
             Random RandomGenerator = new();
@@ -43,41 +44,39 @@ namespace PagamentoService
         }
 
         // Método de extensão para configuração de rotas
-        public static async Task Consume()
+        public static async Task ConsumePedidosCriados()
         {
-            string queueName = "Pedidos-Criados";
             var factory = new ConnectionFactory { HostName = "localhost" };
-
+            string queue = "fila-pedidos-pagamentos";
             await using var connection = await factory.CreateConnectionAsync();
             await using var channel = await connection.CreateChannelAsync();
 
-            await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false,
-                autoDelete: false, arguments: null);
+            await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Topic);
 
-            await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false);
+// declare a server-named queue
+  
 
-            Console.WriteLine(" [*] Waiting for messages.");
+            
+                await channel.QueueBindAsync(queue: queue, exchange: exchangeName, routingKey: "Pedidos-Criados");
+                
+
+            Console.WriteLine(" [*] Consumidor 1 aguardando mensagens...");
 
             var consumer = new AsyncEventingBasicConsumer(channel);
-            string message = "";
             consumer.ReceivedAsync += async (model, ea) =>
             {
-                byte[] body = ea.Body.ToArray();
-                message = Encoding.UTF8.GetString(body);
-                Console.WriteLine($" [x] Received {message}");
-                  Pedido pedido = JsonSerializer.Deserialize<Pedido>(message);
+                var body = ea.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
+                Console.WriteLine($" [Consumidor 1] Recebida: {message}");
 
-                ProcessarPedidoAsync(pedido);
+                // Confirmação manual
+                await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
             };
-            // Iniciando o consumo da fila
-            await channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer);
 
-            // Aguardando o usuário pressionar Enter para sair
-            Console.WriteLine(" Press [enter] to exit.");
+            await channel.BasicConsumeAsync(queue, autoAck: false, consumer: consumer);
+
             Console.ReadLine();
-
-
-
         }
+
     }
 }

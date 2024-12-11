@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
 Task.Run(() =>
 {
 });
-PagamentoRoute.Consume();
+PagamentoRoute.ConsumePedidosCriados();
 
 app.UseHttpsRedirection();
 app.Run();

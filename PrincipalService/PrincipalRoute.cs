@@ -21,7 +21,7 @@ public static class PrincipalRoute
 
     public static List<Produto> produtos = new List<Produto>();
     public static List<Pedido> pedidos = new List<Pedido>();
-    static int idCounter = 0;
+    static int idCounter = 1;
     public static void PrincipalRoutes(this WebApplication app,  HttpClient httpClient)
     {
         // Endpoint para carregar produtos da API externa
@@ -115,8 +115,8 @@ public static class PrincipalRoute
             novoPedido.PedidoId = idCounter++;
             novoPedido.DataPedido = DateTime.Now;
             novoPedido.Status = "criado";
-            string pedidoJson = JsonSerializer.Serialize(novoPedido);
-
+            string pedidoJson = JsonSerializer.Serialize(novoPedido); 
+            cart.Clear();
             await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
 
             pedidos.Add(novoPedido);
