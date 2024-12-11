@@ -53,11 +53,11 @@ namespace PagamentoService
 
             await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Topic);
 
-// declare a server-named queue
-  
+            await channel.QueueDeclareAsync(queue: queue, durable: true, exclusive: false, autoDelete: false);
 
-            
-                await channel.QueueBindAsync(queue: queue, exchange: exchangeName, routingKey: "Pedidos-Criados");
+            await channel.QueueBindAsync(queue: queue, exchange: exchangeName, routingKey: "Pedidos-Criados");
+
+
                 
 
             Console.WriteLine(" [*] Consumidor 1 aguardando mensagens...");
