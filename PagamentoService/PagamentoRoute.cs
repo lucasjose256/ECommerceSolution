@@ -57,7 +57,7 @@ namespace PagamentoService
 
             await channel.QueueBindAsync(queue: queue, exchange: exchangeName, routingKey: "Pedidos-Criados");
 
-
+//
                 
 
             Console.WriteLine(" [*] Consumidor 1 aguardando mensagens...");
