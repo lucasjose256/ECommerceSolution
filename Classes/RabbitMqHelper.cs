@@ -1,12 +1,16 @@
 using System.Text;
 using System.Text.Json;
+using System.Threading.Channels;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace Classes;
 
 public static class RabbitMqHelper
+
 {
+    public static string[] topicos = { "Pedidos-Criados", "Pagamentos-Aprovados", "Pagamentos-Recusados", "Pedidos-Enviados" };
+
     public static string exchangeName = "pedidos-exchange";
      public static async Task ConsumeMessageEntrega()
 {
@@ -40,75 +44,98 @@ public static class RabbitMqHelper
     Console.ReadLine();
 
 }
-public static string[] topicos = { "Pedidos-Criados", "Pagamentos-Aprovados", "Pagamentos-Recusados", "Pedidos-Enviados" };
-
-public static async Task ConsumeMessageEstoque(string routingKey, List<Produto> produtosLista)
-{
-    var factory = new ConnectionFactory { HostName = "localhost" };
-
-    await using var connection = await factory.CreateConnectionAsync();
-    await using var channel = await connection.CreateChannelAsync();
-
-    await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Topic);
-
-// declare a server-named queue
-   // QueueDeclareOk queueDeclareResult = await channel.QueueDeclareAsync();
-   // string queueName = queueDeclareResult.QueueName;
-
-   await channel.QueueDeclareAsync(queue: "fila-pedidos", durable: true, exclusive: false, autoDelete: false);
-
-    await channel.QueueBindAsync(queue: "fila-pedidos", exchange: exchangeName, routingKey: "Pedidos-Criados");
-
-
-
-    Console.WriteLine(" [*] Aguardando mensagens...");
-
-    var consumer = new AsyncEventingBasicConsumer(channel);
-
-    // Tratamento assíncrono das mensagens recebidas
-    consumer.ReceivedAsync += async (model, ea) =>
+     public static async Task ConsumeMessageEstoque(List<Produto> produtosLista)
     {
-        byte[] body = ea.Body.ToArray();
-        var message = Encoding.UTF8.GetString(body);
-        Console.WriteLine($" [x] Mensagem recebida: {message}");
+        string[] topicos = { "Pedidos-Criados", "Pagamentos-Recusados" };
+        var factory = new ConnectionFactory { HostName = "localhost" };
 
-        try
+        await using var connection = await factory.CreateConnectionAsync();
+        await using var channel = await connection.CreateChannelAsync();
+
+        // Declara o Exchange
+        await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Topic);
+
+        // Declara a fila e vincula a fila ao tópico correto
+        string filaPedidos = "fila-pedidos";
+        await channel.QueueDeclareAsync(queue: filaPedidos, durable: true, exclusive: false, autoDelete: false);
+
+        foreach (var topico in topicos)
         {
-            // Desserializa o JSON para um objeto Pedido
-            Pedido pedido = JsonSerializer.Deserialize<Pedido>(message);
+            await channel.QueueBindAsync(queue: filaPedidos, exchange: exchangeName, routingKey: topico);
+        }
 
-            if (pedido?.Itens != null)
+        Console.WriteLine(" [*] Aguardando mensagens...");
+
+        var consumer = new AsyncEventingBasicConsumer(channel);
+
+        consumer.ReceivedAsync += async (model, ea) =>
+        {
+            byte[] body = ea.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body);
+            string routingKeyReceived = ea.RoutingKey;
+
+            Console.WriteLine($" [x] Mensagem recebida ({routingKeyReceived}): {message}");
+
+            try
             {
-                foreach (var item in pedido.Itens)
+                Pedido pedido = JsonSerializer.Deserialize<Pedido>(message);
+                if (pedido?.Itens != null)
                 {
-                    var produto = produtosLista.FirstOrDefault(p => p.Id == item.ProdutoId);
-                    if (produto != null)
+                    foreach (var item in pedido.Itens)
                     {
-                        produto.Estoque -= item.Quantidade;
-                        Console.WriteLine($"Estoque atualizado: {produto.Nome} - Novo Estoque: {produto.Estoque}");
+                        var produto = produtosLista.FirstOrDefault(p => p.Id == item.ProdutoId);
+                        if (produto != null)
+                        {
+                            // Lógica baseada no evento recebido
+                            if (routingKeyReceived == "Pedidos-Criados")
+                            {
+                                AtualizarEstoque(produto, item.Quantidade, false);
+                            }
+                            else if (routingKeyReceived == "Pagamentos-Recusados")
+                            {
+                                AtualizarEstoque(produto, item.Quantidade, true);
+                            }
+
+                            Console.WriteLine($"Estoque atualizado: {produto.Nome} - Estoque Atual: {produto.Estoque}");
+                        }
                     }
                 }
+
+                // Confirmação da mensagem
+                await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($" [!] Erro ao processar a mensagem: {ex.Message}");
+                await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: true);
+            }
+        };
 
-            // Confirmação de processamento da mensagem
-            await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
-        }
-        catch (Exception ex)
+        await channel.BasicConsumeAsync(queue: filaPedidos, autoAck: false, consumer: consumer);
+        Console.WriteLine(" [*] Consumidor iniciado. Pressione Ctrl+C para sair.");
+        await Task.Delay(-1); // Mantém o consumidor ativo
+    }
+     private static void AtualizarEstoque(Produto produto, int quantidade, bool retornar)
+    {
+        if (retornar)
         {
-            Console.WriteLine($"Erro ao processar a mensagem: {ex.Message}");
+            // Retorna a quantidade ao estoque (caso pagamento recusado ou pedido cancelado)
+            produto.Estoque += quantidade;
         }
-    };
-
-    await channel.BasicConsumeAsync(
-        queue: "fila-pedidos",
-        autoAck: false,
-        consumer: consumer
-    );
-    Console.WriteLine(" Pressione [enter] para sair.");
-    Console.ReadLine();
-}
-
-public static async Task Publish(string routingKey,string message)
+        else
+        {
+            // Deduz a quantidade, garantindo que o estoque não seja negativo
+            if (produto.Estoque >= quantidade)
+            {
+                produto.Estoque -= quantidade;
+            }
+            else
+            {
+                Console.WriteLine($" [!] Estoque insuficiente para {produto.Nome}. Estoque atual: {produto.Estoque}");
+            }
+        }
+    }
+     public static async Task Publish(string routingKey,string message)
 {
     var factory = new ConnectionFactory { HostName = "localhost" };
     using var connection = await factory.CreateConnectionAsync();
@@ -186,7 +213,7 @@ public static async Task Publish(string routingKey,string message)
             Console.ReadLine();
         }
 
-        public static async Task Notificacoes()
+        public static async Task Notificacoes(Channel<string> notificacaoChannel)
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
 
@@ -223,6 +250,7 @@ public static async Task Publish(string routingKey,string message)
                 var body = ea.Body.ToArray();
                 var mensagem = Encoding.UTF8.GetString(body);
                 Console.WriteLine($"Mensagem recebida do tópico '{ea.RoutingKey}': {mensagem}");
+                await notificacaoChannel.Writer.WriteAsync($"[{ea.RoutingKey}] {mensagem}");
 
                 await Task.CompletedTask; // Indica que o processamento foi concluído
             };

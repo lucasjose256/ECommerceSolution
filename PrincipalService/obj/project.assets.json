@@ -3794,33 +3794,34 @@
     ]
   },
   "packageFolders": {
-    "/Users/lucasbarszcz/.nuget/packages/": {}
+    "C:\\Users\\lucas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/PrincipalService.csproj",
+      "projectUniqueName": "C:\\Users\\lucas\\Source\\Repos\\lucasjose256\\ECommerceSolution\\PrincipalService\\PrincipalService.csproj",
       "projectName": "PrincipalService",
-      "projectPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/PrincipalService.csproj",
-      "packagesPath": "/Users/lucasbarszcz/.nuget/packages/",
-      "outputPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/obj/",
+      "projectPath": "C:\\Users\\lucas\\Source\\Repos\\lucasjose256\\ECommerceSolution\\PrincipalService\\PrincipalService.csproj",
+      "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\lucas\\Source\\Repos\\lucasjose256\\ECommerceSolution\\PrincipalService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/lucasbarszcz/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/Classes.csproj": {
-              "projectPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/Classes.csproj"
+            "C:\\Users\\lucas\\Source\\Repos\\lucasjose256\\ECommerceSolution\\Classes\\Classes.csproj": {
+              "projectPath": "C:\\Users\\lucas\\Source\\Repos\\lucasjose256\\ECommerceSolution\\Classes\\Classes.csproj"
             }
           }
         }
@@ -3829,11 +3830,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3890,7 +3886,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

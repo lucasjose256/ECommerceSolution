@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="../buildMultiTargeting/NotificacaoService.props" />
+  <Import Project="..\buildMultiTargeting\NotificacaoService.props" />
 </Project>

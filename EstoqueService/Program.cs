@@ -32,7 +32,7 @@ app.MapGet("/estoque", () =>
 return produtosLista;
     
 });
-RabbitMqHelper.ConsumeMessageEstoque("Pedidos-Criados", produtosLista);
+RabbitMqHelper.ConsumeMessageEstoque(produtosLista);
 
 
 app.Run();

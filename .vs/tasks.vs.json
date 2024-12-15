@@ -1,0 +1,15 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-ECommerceSolution",
+      "appliesTo": "/",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "task-ECommerceSolution",
+      "appliesTo": "ECommerceSolution.sln",
+      "type": "launch"
+    }
+  ]
+}
