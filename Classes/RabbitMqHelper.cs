@@ -39,6 +39,7 @@ public static class RabbitMqHelper
          message = Encoding.UTF8.GetString(body);
          Task.Delay(2000).Wait();
         Console.WriteLine($" [x] Received {message}");
+         Task.Delay(6000).Wait();
         await Publish("Pedidos-Enviados",message);
 
     };
