@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Channels;
 using Classes;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -14,14 +15,27 @@ public static class PrincipalRoute
     public static List<ItemPedido> cart = new List<ItemPedido>();
     public static List<Produto> produtos = new List<Produto>();
     public static List<Pedido> pedidos = new List<Pedido>();
+    public static Channel<Pedido> pedidosChannel = Channel.CreateUnbounded<Pedido>();
     static int idCounter = 1;
 
     static PrincipalRoute()
     {
-        RabbitMqHelper.ConsumerPrincipal(pedidos);
+        RabbitMqHelper.ConsumerPrincipal(pedidosChannel);
+        ProcessarPedidos(pedidosChannel,pedidos);
     }
     
-    
+    public static async Task ProcessarPedidos(Channel<Pedido> notificacaoChannel, List<Pedido> listaDePedidos)
+    {
+        await foreach (var pedido in notificacaoChannel.Reader.ReadAllAsync())
+        {
+            // Adiciona o pedido à lista
+            listaDePedidos.Add(pedido);
+
+            // Processa o pedido conforme necessário
+            Console.WriteLine($"Pedido {pedido.PedidoId} processado. Total de pedidos na lista: {listaDePedidos.Count}");
+        }
+    }
+
     public static void PrincipalRoutes(this WebApplication app, HttpClient httpClient)
     {
         // Endpoint para carregar produtos da API externa

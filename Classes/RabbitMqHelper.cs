@@ -277,7 +277,7 @@ public static class RabbitMqHelper
             await Task.Delay(-1); // Mantém o consumidor ativo indefinidamente
         }
 
-        public static async Task ConsumerPrincipal(List<Pedido> notificacaoChannel)
+        public static async Task ConsumerPrincipal(Channel<Pedido> pedidoChanel)
         { 
             string[] topicos = { "Pagamentos-Aprovados", "Pagamentos-Recusados", "Pedidos-Enviados"};
 
@@ -313,27 +313,28 @@ public static class RabbitMqHelper
                 var body = ea.Body.ToArray();
                 var mensagem = Encoding.UTF8.GetString(body);
                 Console.WriteLine($"Mensagem recebida do tópico '{ea.RoutingKey}': {mensagem}"); 
-            //    await notificacaoChannel.Writer.WriteAsync($"[{ea.RoutingKey}] {mensagem}");
-            Pedido pedido = JsonSerializer.Deserialize<Pedido>(mensagem);
+                Pedido pedido = JsonSerializer.Deserialize<Pedido>(mensagem);
 
             if (pedido != null)
             {
-                // Verifica o tópico e processa de acordo com a chave de roteamento
                 switch (ea.RoutingKey)
                 {
                     case "Pagamentos-Aprovados":
+                        pedido.Status="aprovado";
+                        pedidoChanel.Writer.TryWrite(pedido);
                         Console.WriteLine("Processando pagamento aprovado.");
-                        // Ação para pagamentos aprovados
                         break;
 
                     case "Pagamentos-Recusados":
+                        pedido.Status="recusado";
+                        pedidoChanel.Writer.TryWrite(pedido);
                         Console.WriteLine("Processando pagamento recusado.");
-                        // Ação para pagamentos recusados
                         break;
 
                     case "Pedidos-Enviados":
+                        pedido.Status="enviado";
+                        pedidoChanel.Writer.TryWrite(pedido);
                         Console.WriteLine("Processando pedido enviado.");
-                        // Ação para pedidos enviados
                         break;
 
                     default:
