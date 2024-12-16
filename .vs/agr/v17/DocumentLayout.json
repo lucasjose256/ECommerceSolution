@@ -31,6 +31,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             }
           ]
         },
@@ -46,7 +50,7 @@
               "RelativeDocumentMoniker": "PrincipalService\\PrincipalRoute.cs",
               "ToolTip": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PrincipalService\\PrincipalRoute.cs",
               "RelativeToolTip": "PrincipalService\\PrincipalRoute.cs",
-              "ViewState": "AQIAAJYAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAJ8AAAAAAAAAAAAAAKgAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-16T01:14:40.386Z",
               "EditorCaption": ""
@@ -59,9 +63,14 @@
               "RelativeDocumentMoniker": "PrincipalService\\Program.cs",
               "ToolTip": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PrincipalService\\Program.cs",
               "RelativeToolTip": "PrincipalService\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAACEAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-16T01:14:35.815Z"
+              "WhenOpened": "2024-12-16T01:14:35.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             }
           ]
         }

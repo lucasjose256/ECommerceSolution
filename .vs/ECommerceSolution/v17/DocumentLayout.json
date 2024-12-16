@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{A8EB25BE-52F7-4478-B697-99A18F216E51}|PrincipalService\\PrincipalService.csproj|solutionrelative:principalservice\\principalroute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\pagamentoservice\\pagamentoservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|solutionrelative:pagamentoservice\\pagamentoservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\pagamentoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|solutionrelative:pagamentoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -33,10 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\pagamentoservice\\models\\productmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|solutionrelative:pagamentoservice\\models\\productmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\pagamentoservice\\pagamentoservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|solutionrelative:pagamentoservice\\pagamentoservice.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 264,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -61,8 +61,12 @@
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ProductModel.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PagamentoService\\models\\ProductModel.cs",
               "RelativeDocumentMoniker": "PagamentoService\\models\\ProductModel.cs",
@@ -74,7 +78,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "PagamentoService.http",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PagamentoService\\PagamentoService.http",
               "RelativeDocumentMoniker": "PagamentoService\\PagamentoService.http",
@@ -82,11 +86,12 @@
               "RelativeToolTip": "PagamentoService\\PagamentoService.http",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2024-12-15T23:55:32.212Z"
+              "WhenOpened": "2024-12-15T23:55:32.212Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "RabbitMqHelper.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\Classes\\RabbitMqHelper.cs",
               "RelativeDocumentMoniker": "Classes\\RabbitMqHelper.cs",
@@ -94,8 +99,7 @@
               "RelativeToolTip": "Classes\\RabbitMqHelper.cs",
               "ViewState": "AQIAAB0AAAAAAAAAAAAqwEwAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-15T23:46:22.2Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-15T23:46:22.2Z"
             },
             {
               "$type": "Document",
@@ -105,14 +109,14 @@
               "RelativeDocumentMoniker": "PrincipalService\\PrincipalRoute.cs",
               "ToolTip": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PrincipalService\\PrincipalRoute.cs",
               "RelativeToolTip": "PrincipalService\\PrincipalRoute.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAANoAAAAAAAAA",
+              "ViewState": "AQIAAHsAAAAAAAAAAAAAALYAAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-15T23:32:44.672Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\EstoqueService\\Program.cs",
               "RelativeDocumentMoniker": "EstoqueService\\Program.cs",
@@ -124,7 +128,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\EntregaService\\Program.cs",
               "RelativeDocumentMoniker": "EntregaService\\Program.cs",
@@ -136,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PrincipalService\\Program.cs",
               "RelativeDocumentMoniker": "PrincipalService\\Program.cs",
@@ -148,7 +152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\NotificacaoService\\Program.cs",
               "RelativeDocumentMoniker": "NotificacaoService\\Program.cs",
@@ -160,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PagamentoService\\Program.cs",
               "RelativeDocumentMoniker": "PagamentoService\\Program.cs",
@@ -168,8 +172,7 @@
               "RelativeToolTip": "PagamentoService\\Program.cs",
               "ViewState": "AQIAAAkAAAAAAAAAAAAAAB0AAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-15T23:46:01.433Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-15T23:46:01.433Z"
             }
           ]
         },

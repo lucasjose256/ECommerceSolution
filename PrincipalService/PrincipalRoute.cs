@@ -173,6 +173,7 @@ public static class PrincipalRoute
             Console.WriteLine($"Pagamento recebido:");
             Console.WriteLine($"Nome: {pagamento.Nome}");
             Console.WriteLine($"Endereço: {pagamento.Endereco}");
+            Console.WriteLine($"Status: {statusPagamento}");
             Console.WriteLine($"Valor: {pagamento.Valor}");
 
             //string pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
@@ -181,10 +182,10 @@ public static class PrincipalRoute
 
             String pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
             //cart.Clear();
-            //if (statusPagamento == "aprovado")
-            //    await RabbitMqHelper.Publish("Pagamentos-Aprovados", $"{pedidoJson}");
-            //else if (statusPagamento == "reprovado")
-            //    await RabbitMqHelper.Publish("Pagamentos-Recusados", $"{pedidoJson}");
+            if (statusPagamento == "aprovado")
+                await RabbitMqHelper.Publish("Pagamentos-Aprovados", $"{pedidoJson}");
+            else if (statusPagamento == "recusado")
+                await RabbitMqHelper.Publish("Pagamentos-Recusados", $"{pedidoJson}");
 
 
             return Results.Ok(new
