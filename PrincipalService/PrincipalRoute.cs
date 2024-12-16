@@ -28,11 +28,19 @@ public static class PrincipalRoute
     {
         await foreach (var pedido in notificacaoChannel.Reader.ReadAllAsync())
         {
-            // Adiciona o pedido à lista
-            listaDePedidos.Add(pedido);
-
-            // Processa o pedido conforme necessário
-            Console.WriteLine($"Pedido {pedido.PedidoId} processado. Total de pedidos na lista: {listaDePedidos.Count}");
+            // Aqui, vamos procurar o pedido na lista e, se encontrado, atualizá-lo.
+            Pedido pedidoExistente = listaDePedidos.FirstOrDefault(p => p.PedidoId == pedido.PedidoId);
+            
+            if (pedidoExistente != null)
+            {
+                pedidoExistente.Status = pedido.Status;  
+         Console.WriteLine($"Pedido {pedido.PedidoId} atualizado com o status {pedido.Status}. Total de pedidos na lista: {listaDePedidos.Count}");
+            }
+            else
+            {
+                listaDePedidos.Add(pedido);
+                Console.WriteLine($"Novo pedido {pedido.PedidoId} adicionado. Total de pedidos na lista: {listaDePedidos.Count}");
+            }
         }
     }
 

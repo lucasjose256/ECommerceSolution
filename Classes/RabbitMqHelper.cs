@@ -62,8 +62,7 @@ public static class RabbitMqHelper
         // Declara o Exchange
         await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Topic);
 
-        // Declara a fila e vincula a fila ao tópico correto
-        string filaPedidos = "fila-pedidos";
+        string filaPedidos = "estoque";
         await channel.QueueDeclareAsync(queue: filaPedidos, durable: true, exclusive: false, autoDelete: false);
 
         foreach (var topico in topicos)
@@ -266,15 +265,14 @@ public static class RabbitMqHelper
                 await Task.CompletedTask; // Indica que o processamento foi concluído
             };
 
-            // Inicia o consumo da fila
             await channel.BasicConsumeAsync(
-                queue: queueName,      // Usa o nome correto da fila gerada automaticamente
-                autoAck: true,         // Confirmação automática
+                queue: queueName, 
+                autoAck: true,         
                 consumer: consumer
             );
 
             Console.WriteLine("Consumindo mensagens...");
-            await Task.Delay(-1); // Mantém o consumidor ativo indefinidamente
+            await Task.Delay(-1); 
         }
 
         public static async Task ConsumerPrincipal(Channel<Pedido> pedidoChanel)
