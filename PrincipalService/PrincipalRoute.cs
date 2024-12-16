@@ -11,17 +11,17 @@ namespace PrincipalService;
 
 public static class PrincipalRoute
 {
-
-
-
-    // Função para publicar mensagem
-
-
     public static List<ItemPedido> cart = new List<ItemPedido>();
-
     public static List<Produto> produtos = new List<Produto>();
     public static List<Pedido> pedidos = new List<Pedido>();
     static int idCounter = 1;
+
+    static PrincipalRoute()
+    {
+        
+    }
+    
+    
     public static void PrincipalRoutes(this WebApplication app, HttpClient httpClient)
     {
         // Endpoint para carregar produtos da API externa
@@ -182,10 +182,18 @@ public static class PrincipalRoute
 
             String pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
             //cart.Clear();
+            Task.Delay(2000).Wait();
+
             if (statusPagamento == "aprovado")
+            {
                 await RabbitMqHelper.Publish("Pagamentos-Aprovados", $"{pedidoJson}");
+
+            }
             else if (statusPagamento == "recusado")
+            {
                 await RabbitMqHelper.Publish("Pagamentos-Recusados", $"{pedidoJson}");
+
+            }
 
 
             return Results.Ok(new
@@ -196,6 +204,32 @@ public static class PrincipalRoute
             });
         });
 
+        app.MapPost("/webhook/pagamento/{id}", async (HttpContext context) =>
+        {
+            
+            var webhookRequest = await context.Request.ReadFromJsonAsync<Pagamento>();
+
+            if (webhookRequest == null)
+                return Results.BadRequest("Dados inválidos no webhook");
+
+            Console.WriteLine($"Webhook Recebido:");
+            Console.WriteLine($"Pedido ID: {webhookRequest.PedidoId}");
+            Console.WriteLine($"Status: {webhookRequest.Status}");
+            var pedidoEncontrado = pedidos.FirstOrDefault(p => p.PedidoId == webhookRequest.PedidoId);
+            string pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
+
+            await Task.Delay(2000);
+            // Publica o pagamento no RabbitMQ
+            if (webhookRequest.Status == "aprovado")
+            {
+                await RabbitMqHelper.Publish("Pagamentos-Aprovados", pedidoJson);
+            }
+            else if (webhookRequest.Status == "recusado")
+            {
+                await RabbitMqHelper.Publish("Pagamentos-Recusados", pedidoJson);
+            }
+            return Results.Ok(new { mensagem = "Webhook processado com sucesso." });
+        });
 
 
     }

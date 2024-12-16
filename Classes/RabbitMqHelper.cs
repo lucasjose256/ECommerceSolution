@@ -9,21 +9,25 @@ namespace Classes;
 public static class RabbitMqHelper
 
 {
-    public static string[] topicos = { "Pedidos-Criados", "Pagamentos-Aprovados", "Pagamentos-Recusados", "Pedidos-Enviados" };
+    public static string[] topicos = { "Pedidos-Criados", "Pagamentos-Aprovados", "Pagamentos-Recusados", "Pedidos-Enviados","Pedidos-Excluidos" };
 
     public static string exchangeName = "pedidos-exchange";
      public static async Task ConsumeMessageEntrega()
     {
-    string queueName="Pagamentos-Aprovados";
+    string routing="Pagamentos-Aprovados";
     var factory = new ConnectionFactory { HostName = "localhost" };
 
     await using var connection = await factory.CreateConnectionAsync();
     await using var channel = await connection.CreateChannelAsync();
 
-    await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, 
-        autoDelete: false, arguments: null);
+    // Declara o Exchange
+    await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Topic);
 
-    await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false);
+    // Declara a fila e vincula a fila ao tópico correto
+    string queueName = "fila-pagamentos";
+    await channel.QueueDeclareAsync(queue: queueName, durable: true, exclusive: false, autoDelete: false);
+
+    await channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: routing);
 
     Console.WriteLine(" [*] Waiting for messages.");
 
@@ -33,11 +37,14 @@ public static class RabbitMqHelper
     {
         byte[] body = ea.Body.ToArray();
          message = Encoding.UTF8.GetString(body);
+         Task.Delay(2000).Wait();
         Console.WriteLine($" [x] Received {message}");
+        await Publish("Pedidos-Enviados",message);
+
     };
-    await Publish("Pedidos-Enviados",message);
+
     // Iniciando o consumo da fila
-    await channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer);
+    await channel.BasicConsumeAsync(queue: queueName, autoAck: true, consumer: consumer);
 
     // Aguardando o usuário pressionar Enter para sair
     Console.WriteLine(" Press [enter] to exit.");
@@ -177,7 +184,7 @@ public static class RabbitMqHelper
         }
 
         // Método de extensão para configuração de rotas
-        public static async Task ConsumePedidosCriados()
+        public static async Task ConsumePedidosCriados(List<Pedido> pedidos)
         {
             var factory = new ConnectionFactory { HostName = "localhost" };
             string queue = "fila-pedidos-pagamentos";
@@ -202,7 +209,13 @@ public static class RabbitMqHelper
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine($" [Consumidor 1] Recebida: {message}");
                 Pedido pedido = JsonSerializer.Deserialize<Pedido>(message);
-                ProcessarPedidoAsync(pedido);
+                if (pedido != null)
+                {
+                    // Adiciona o pedido no Channel
+                     pedidos.Add(pedido);
+                  
+                }
+            //    ProcessarPedidoAsync(pedido);
                 await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
             };
 

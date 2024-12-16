@@ -29,8 +29,9 @@ Task.Run(async () =>
 {
     while (true)
     {
-        await Task.Delay(5000); // Simula tempo de espera para notificações
-        await notificacaoChannel.Writer.WriteAsync($"Mensagem enviada às {DateTime.Now}");
+      await  RabbitMqHelper.Notificacoes(notificacaoChannel);
+        await Task.Delay(1000); // Simula tempo de espera para notificações
+      //  await notificacaoChannel.Writer.WriteAsync($"Mensagem enviada às {DateTime.Now}");
     }
 });
 

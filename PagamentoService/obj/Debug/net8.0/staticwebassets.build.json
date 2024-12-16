@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "Hash": "SkW4+6bOFnXQTncXU2f1RzH1vTzMDQquEcDhDrS66PE=",
+  "Hash": "mZhsF1QD8bKQDPe+IPszwc9jPeUs0edHKqP3BK24iKY=",
   "Source": "PagamentoService",
   "BasePath": "_content/PagamentoService",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [
     {
-      "Identity": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PrincipalService\\PrincipalService.csproj",
+      "Identity": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/PrincipalService/PrincipalService.csproj",
       "Version": 2,
       "Source": "PrincipalService",
       "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
