@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 Task.Run(() =>
 {
 });
-RabbitMqHelper.ConsumePedidosCriados();
+//RabbitMqHelper.ConsumePedidosCriados();
 
 
 

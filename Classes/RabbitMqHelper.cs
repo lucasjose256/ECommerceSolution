@@ -13,7 +13,7 @@ public static class RabbitMqHelper
 
     public static string exchangeName = "pedidos-exchange";
      public static async Task ConsumeMessageEntrega()
-{
+    {
     string queueName="Pagamentos-Aprovados";
     var factory = new ConnectionFactory { HostName = "localhost" };
 
@@ -46,7 +46,7 @@ public static class RabbitMqHelper
 }
      public static async Task ConsumeMessageEstoque(List<Produto> produtosLista)
     {
-        string[] topicos = { "Pedidos-Criados", "Pagamentos-Recusados" };
+        string[] topicos = { "Pedidos-Criados", "Pagamentos-Recusados"};
         var factory = new ConnectionFactory { HostName = "localhost" };
 
         await using var connection = await factory.CreateConnectionAsync();
@@ -74,7 +74,7 @@ public static class RabbitMqHelper
             var message = Encoding.UTF8.GetString(body);
             string routingKeyReceived = ea.RoutingKey;
 
-            Console.WriteLine($" [x] Mensagem recebida ({routingKeyReceived}): {message}");
+            Console.WriteLine($" [x] Mensagem rrecebida ({routingKeyReceived}): {message}");
 
             try
             {
@@ -106,7 +106,7 @@ public static class RabbitMqHelper
             }
             catch (Exception ex)
             {
-                Console.WriteLine($" [!] Erro ao processar a mensagem: {ex.Message}");
+                //Console.WriteLine($" [!] Erro ao processar a mensagem: {ex.Message}");
                 await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: true);
             }
         };

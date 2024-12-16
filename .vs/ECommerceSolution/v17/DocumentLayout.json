@@ -7,24 +7,24 @@
       "RelativeMoniker": "D:0:0:{A8EB25BE-52F7-4478-B697-99A18F216E51}|PrincipalService\\PrincipalService.csproj|solutionrelative:principalservice\\principalroute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7D5A79B7-2ACF-430D-9692-C0A3897199C8}|Classes\\Classes.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\classes\\rabbitmqhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7D5A79B7-2ACF-430D-9692-C0A3897199C8}|Classes\\Classes.csproj|solutionrelative:classes\\rabbitmqhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\pagamentoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B6540512-BF83-40DA-86C4-459932DD995D}|PagamentoService\\PagamentoService.csproj|solutionrelative:pagamentoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D5A79B7-2ACF-430D-9692-C0A3897199C8}|Classes\\Classes.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\classes\\rabbitmqhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7D5A79B7-2ACF-430D-9692-C0A3897199C8}|Classes\\Classes.csproj|solutionrelative:classes\\rabbitmqhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A8EB25BE-52F7-4478-B697-99A18F216E51}|PrincipalService\\PrincipalService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\principalservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A8EB25BE-52F7-4478-B697-99A18F216E51}|PrincipalService\\PrincipalService.csproj|solutionrelative:principalservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3C7CB2CD-5702-43DE-9A2C-E92FAA249D20}|NotificacaoService\\NotificacaoService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\notificacaoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3C7CB2CD-5702-43DE-9A2C-E92FAA249D20}|NotificacaoService\\NotificacaoService.csproj|solutionrelative:notificacaoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B70D86E9-1CF9-4654-9AE0-0A894624F41A}|EntregaService\\EntregaService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\entregaservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B70D86E9-1CF9-4654-9AE0-0A894624F41A}|EntregaService\\EntregaService.csproj|solutionrelative:entregaservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3C7CB2CD-5702-43DE-9A2C-E92FAA249D20}|NotificacaoService\\NotificacaoService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\notificacaoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C7CB2CD-5702-43DE-9A2C-E92FAA249D20}|NotificacaoService\\NotificacaoService.csproj|solutionrelative:notificacaoservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{42733ED1-063E-458E-83BB-E2579F21245B}|EstoqueService\\EstoqueService.csproj|c:\\users\\ichib\\onedrive\\documents\\agr\\estoqueservice\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -45,8 +45,8 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 202,
-          "SelectedChildIndex": 7,
+          "DockedWidth": 264,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -61,10 +61,6 @@
               "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 7,
               "Title": "ProductModel.cs",
@@ -74,8 +70,7 @@
               "RelativeToolTip": "PagamentoService\\models\\ProductModel.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-15T23:55:40.742Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-15T23:55:40.742Z"
             },
             {
               "$type": "Document",
@@ -87,18 +82,17 @@
               "RelativeToolTip": "PagamentoService\\PagamentoService.http",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2024-12-15T23:55:32.212Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-15T23:55:32.212Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "RabbitMqHelper.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\Classes\\RabbitMqHelper.cs",
               "RelativeDocumentMoniker": "Classes\\RabbitMqHelper.cs",
               "ToolTip": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\Classes\\RabbitMqHelper.cs",
               "RelativeToolTip": "Classes\\RabbitMqHelper.cs",
-              "ViewState": "AQIAAOEAAAAAAAAAAAAwwM4AAAAOAAAA",
+              "ViewState": "AQIAAB0AAAAAAAAAAAAqwEwAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-15T23:46:22.2Z",
               "EditorCaption": ""
@@ -111,7 +105,7 @@
               "RelativeDocumentMoniker": "PrincipalService\\PrincipalRoute.cs",
               "ToolTip": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PrincipalService\\PrincipalRoute.cs",
               "RelativeToolTip": "PrincipalService\\PrincipalRoute.cs",
-              "ViewState": "AQIAAJcAAAAAAAAAAAAgwKUAAAAOAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAANoAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-15T23:32:44.672Z",
               "EditorCaption": ""
@@ -126,21 +120,19 @@
               "RelativeToolTip": "EstoqueService\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-16T00:51:17.736Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-16T00:51:17.736Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\EntregaService\\Program.cs",
               "RelativeDocumentMoniker": "EntregaService\\Program.cs",
               "ToolTip": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\EntregaService\\Program.cs",
               "RelativeToolTip": "EntregaService\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-16T00:51:31.009Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-16T00:51:31.009Z"
             },
             {
               "$type": "Document",
@@ -152,12 +144,11 @@
               "RelativeToolTip": "PrincipalService\\Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-16T00:59:38.513Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-16T00:59:38.513Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\NotificacaoService\\Program.cs",
               "RelativeDocumentMoniker": "NotificacaoService\\Program.cs",
@@ -165,18 +156,17 @@
               "RelativeToolTip": "NotificacaoService\\Program.cs",
               "ViewState": "AQIAACEAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-15T23:46:05.817Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-15T23:46:05.817Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PagamentoService\\Program.cs",
               "RelativeDocumentMoniker": "PagamentoService\\Program.cs",
               "ToolTip": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PagamentoService\\Program.cs",
               "RelativeToolTip": "PagamentoService\\Program.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAAB0AAAAAAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAB0AAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-15T23:46:01.433Z",
               "EditorCaption": ""
@@ -184,7 +174,7 @@
           ]
         },
         {
-          "DockedWidth": 198,
+          "DockedWidth": 136,
           "SelectedChildIndex": -1,
           "Children": [
             {

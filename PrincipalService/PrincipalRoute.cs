@@ -11,18 +11,18 @@ namespace PrincipalService;
 
 public static class PrincipalRoute
 {
-   
 
-    
+
+
     // Função para publicar mensagem
-   
- 
+
+
     public static List<ItemPedido> cart = new List<ItemPedido>();
 
     public static List<Produto> produtos = new List<Produto>();
     public static List<Pedido> pedidos = new List<Pedido>();
     static int idCounter = 1;
-    public static void PrincipalRoutes(this WebApplication app,  HttpClient httpClient)
+    public static void PrincipalRoutes(this WebApplication app, HttpClient httpClient)
     {
         // Endpoint para carregar produtos da API externa
         app.MapGet("/produtos", async () =>
@@ -35,8 +35,8 @@ public static class PrincipalRoute
                 // Verifica se a resposta foi bem-sucedida
                 if (response.IsSuccessStatusCode)
                 {
-                     produtos = await response.Content.ReadFromJsonAsync<List<Produto>>();
-                    return Results.Ok(produtos); 
+                    produtos = await response.Content.ReadFromJsonAsync<List<Produto>>();
+                    return Results.Ok(produtos);
                 }
                 else
                 {
@@ -48,7 +48,7 @@ public static class PrincipalRoute
                 return Results.StatusCode(500);
             }
         });
-            
+
         app.MapPost("/cart/{produtoId}", async ([FromBody] ItemResponse item) =>
         {
             var produto = produtos.FirstOrDefault(p => p.Id == item.ProdutoId);
@@ -65,13 +65,14 @@ public static class PrincipalRoute
             //ou usar os eventos
             // Busca se o item já existe no carrinho
             var itemExistente = cart.FirstOrDefault(c => c.ProdutoId == item.ProdutoId);
-    
+
             if (itemExistente != null)
             {
                 itemExistente.Quantidade += item.Quantidade;
             }
             else
-            { cart.Add(new ItemPedido
+            {
+                cart.Add(new ItemPedido
                 {
                     ProdutoId = item.ProdutoId,
                     NomeProduto = produto.Nome,
@@ -88,7 +89,7 @@ public static class PrincipalRoute
             if (item is null) return Results.NotFound("Item não encontrado.");
 
             cart.Remove(item);
-               //PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
+            //PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
 
             return Results.NoContent();
         });
@@ -98,7 +99,7 @@ public static class PrincipalRoute
         });
 
         app.MapGet("/pedidos", () => pedidos);
-        
+
 
         app.MapGet("/pedidos/{id}", (int id) =>
         {
@@ -106,8 +107,8 @@ public static class PrincipalRoute
             return pedido is not null ? Results.Ok(pedido) : Results.NotFound("Pedido não encontrado.");
         });
 
-        
-        app.MapPost("/criar-pedido",async (Pedido novoPedido) =>
+
+        app.MapPost("/criar-pedido", async (Pedido novoPedido) =>
         {
             //precisa alterar a logica do contador pq ele modifica o id e cria outro intem na lista
 
@@ -115,14 +116,14 @@ public static class PrincipalRoute
             novoPedido.PedidoId = idCounter++;
             novoPedido.DataPedido = DateTime.Now;
             novoPedido.Status = "criado";
-            //string pedidoJson = JsonSerializer.Serialize(novoPedido); 
+            string pedidoJson = JsonSerializer.Serialize(novoPedido);
             cart.Clear();
-            //await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
+            await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
 
             pedidos.Add(novoPedido);
 
             // Publica evento no RabbitMQ
-          //  PublishToQueue("Pedidos_Criados", JsonSerializer.Serialize(novoPedido));
+            //  PublishToQueue("Pedidos_Criados", JsonSerializer.Serialize(novoPedido));
 
             return Results.Created($"/api/pedidos/{novoPedido.PedidoId}", novoPedido);
         }).WithName("CreatePedido");
@@ -133,7 +134,7 @@ public static class PrincipalRoute
             if (pedido is null) return Results.NotFound("Pedido não encontrado.");
 
             pedido.Status = pedidoAtualizado.Status;
-        //    PublishToQueue("Pedidos_Atualizados", JsonSerializer.Serialize(pedido));
+            //    PublishToQueue("Pedidos_Atualizados", JsonSerializer.Serialize(pedido));
 
             return Results.Ok(pedido);
         });
@@ -144,7 +145,7 @@ public static class PrincipalRoute
             if (pedido is null) return Results.NotFound("Pedido não encontrado.");
 
             pedidos.Remove(pedido);
-        //    PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
+            //    PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
 
             return Results.NoContent();
         });
@@ -165,22 +166,32 @@ public static class PrincipalRoute
             // Randomize payment status
             string statusPagamento = new Random().Next(2) == 0 ? "aprovado" : "recusado";
 
-
             // Update pedido status based on payment result
             pedidoEncontrado.Status = statusPagamento;
 
-            string pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
-            cart.Clear();
-            await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
+            // Log received payment details
+            Console.WriteLine($"Pagamento recebido:");
+            Console.WriteLine($"Nome: {pagamento.Nome}");
+            Console.WriteLine($"Endereço: {pagamento.Endereco}");
+            Console.WriteLine($"Valor: {pagamento.Valor}");
 
-            // Optionally, log or publish the event to RabbitMQ
-            // await RabbitMqHelper.Publish("Pedidos-Atualizados", JsonSerializer.Serialize(pedidoEncontrado));
+            //string pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
+            //cart.Clear();
+            //await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
+
+            String pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
+            //cart.Clear();
+            //if (statusPagamento == "aprovado")
+            //    await RabbitMqHelper.Publish("Pagamentos-Aprovados", $"{pedidoJson}");
+            //else if (statusPagamento == "reprovado")
+            //    await RabbitMqHelper.Publish("Pagamentos-Recusados", $"{pedidoJson}");
+
 
             return Results.Ok(new
             {
                 PedidoId = pedidoEncontrado.PedidoId,
                 Status = pedidoEncontrado.Status,
-                Valor = pagamento.valor
+                Valor = pagamento.Valor
             });
         });
 
@@ -192,9 +203,10 @@ public static class PrincipalRoute
 public class Pagamento
 {
     public int PedidoId { get; set; }
-    public string status { get; set; }
-    public decimal valor { get; set; }
-
+    public string Status { get; set; }
+    public decimal Valor { get; set; }
+    public string Nome { get; set; }
+    public string Endereco { get; set; }
 }
 public class ItemResponse
 {
