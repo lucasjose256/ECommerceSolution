@@ -1,11 +1,23 @@
 {
   "Version": 1,
-  "Hash": "F9UOPpB93x9kNUyqahQR81luEXYwEYL2EFxXkoaNi1U=",
+  "Hash": "SkW4+6bOFnXQTncXU2f1RzH1vTzMDQquEcDhDrS66PE=",
   "Source": "PagamentoService",
   "BasePath": "_content/PagamentoService",
   "Mode": "Default",
   "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\ichib\\OneDrive\\Documents\\agr\\PrincipalService\\PrincipalService.csproj",
+      "Version": 2,
+      "Source": "PrincipalService",
+      "GetPublishAssetsTargets": "ComputeReferencedStaticWebAssetsPublishManifest;GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework"
+    }
+  ],
   "DiscoveryPatterns": [],
   "Assets": []
 }

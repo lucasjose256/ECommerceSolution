@@ -115,9 +115,9 @@ public static class PrincipalRoute
             novoPedido.PedidoId = idCounter++;
             novoPedido.DataPedido = DateTime.Now;
             novoPedido.Status = "criado";
-            string pedidoJson = JsonSerializer.Serialize(novoPedido); 
+            //string pedidoJson = JsonSerializer.Serialize(novoPedido); 
             cart.Clear();
-            await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
+            //await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
 
             pedidos.Add(novoPedido);
 
@@ -154,19 +154,36 @@ public static class PrincipalRoute
             // 50% de chance de pagamento aprovado ou recusado
             return random.Next(2) == 0 ? "Aprovado" : "Recusado";
         }
-        
-        app.MapPost("/pagamentos/{id}", async ( int id, Pagamento pedido) =>
+
+        app.MapPost("/pagamentos/{id}", async (int id, [FromBody] Pagamento pagamento) =>
         {
-            
-            var pedidoeEncontrado = pedidos.FirstOrDefault(p => p.PedidoId == id);
-            if (pedido is null) return Results.NotFound("Pedido não encontrado.");
+            // Find the corresponding pedido
+            var pedidoEncontrado = pedidos.FirstOrDefault(p => p.PedidoId == id);
+            if (pedidoEncontrado is null)
+                return Results.NotFound(new { mensagem = "Pedido não encontrado." });
 
-            pedidoeEncontrado.Status = pedido.status;
-            //    PublishToQueue("Pedidos_Atualizados", JsonSerializer.Serialize(pedido));
-            
+            // Randomize payment status
+            string statusPagamento = new Random().Next(2) == 0 ? "aprovado" : "recusado";
 
-            return Results.Ok(pedido);
+
+            // Update pedido status based on payment result
+            pedidoEncontrado.Status = statusPagamento;
+
+            string pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
+            cart.Clear();
+            await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
+
+            // Optionally, log or publish the event to RabbitMQ
+            // await RabbitMqHelper.Publish("Pedidos-Atualizados", JsonSerializer.Serialize(pedidoEncontrado));
+
+            return Results.Ok(new
+            {
+                PedidoId = pedidoEncontrado.PedidoId,
+                Status = pedidoEncontrado.Status,
+                Valor = pagamento.valor
+            });
         });
+
 
 
     }
@@ -185,3 +202,5 @@ public class ItemResponse
     public int ProdutoId { get; set; }
 
 }
+
+

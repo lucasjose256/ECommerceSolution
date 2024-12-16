@@ -147,7 +147,7 @@ public static class RabbitMqHelper
     Console.WriteLine($" [x] Sent '{routingKey}':'{message}'");
 }
 
-   public static async Task ProcessarPedidoAsync(Pedido pedido)
+        public static async Task ProcessarPedidoAsync(Pedido pedido)
         {
             Random RandomGenerator = new();
 
@@ -158,20 +158,19 @@ public static class RabbitMqHelper
             await Task.Delay(delay);
 
             // Processamento aleatório: Aprovação ou Recusa
-            bool pagamentoAprovado = RandomGenerator.Next(0, 2) == 1;
-
-            pedido.Status = pagamentoAprovado ? "aprovado" : "recusado";
+            /*bool pagamentoAprovado = RandomGenerator.Next(0, 2) == 1;*/
+            //pedido.Status = pagamentoAprovado ? "aprovado" : "recusado";*
 
             var pedidoJson = JsonSerializer.Serialize(pedido);
 
             // Simula a publicação do evento em uma fila (ou apenas loga no console)
             Console.WriteLine($"Pedido ID {pedido.PedidoId} processado. Status: {pedido.Status}");
 
-            if (pagamentoAprovado)
+            if (pedido.Status == "aprovado")
             {
                Publish("Pagamentos-Aprovados", pedidoJson);
             }
-            else
+            else if (pedido.Status == "recusado")
             { 
                 Publish("Pagamentos-Recusados", pedidoJson);
             }
@@ -203,7 +202,6 @@ public static class RabbitMqHelper
                 var message = Encoding.UTF8.GetString(body);
                 Console.WriteLine($" [Consumidor 1] Recebida: {message}");
                 Pedido pedido = JsonSerializer.Deserialize<Pedido>(message);
-
                 ProcessarPedidoAsync(pedido);
                 await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
             };
