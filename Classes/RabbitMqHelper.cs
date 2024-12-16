@@ -277,5 +277,84 @@ public static class RabbitMqHelper
             await Task.Delay(-1); // Mantém o consumidor ativo indefinidamente
         }
 
+        public static async Task ConsumerPrincipal(List<Pedido> notificacaoChannel)
+        { 
+            string[] topicos = { "Pagamentos-Aprovados", "Pagamentos-Recusados", "Pedidos-Enviados"};
+
+             var factory = new ConnectionFactory() { HostName = "localhost" };
+
+            // Conexão assíncrona com RabbitMQ
+            var connection = await factory.CreateConnectionAsync();
+            var channel = await connection.CreateChannelAsync();
+
+            // Declara o exchange do tipo "Topic"
+            await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Topic);
+
+            // Declara uma fila automática (com nome gerado pelo servidor)
+            var queueDeclare = await channel.QueueDeclareAsync(
+                queue: "principal",                  // Nome vazio para nome automático
+                durable: false,             // Fila não persistente
+                exclusive: true,            // Fila exclusiva para esta conexão
+                autoDelete: true,           // A fila é apagada quando a conexão é encerrada
+                arguments: null
+            );
+
+            var queueName = queueDeclare.QueueName;
+            foreach (var topico in topicos)
+            {
+                await channel.QueueBindAsync(queue: queueName, exchange: exchangeName, routingKey: topico);
+                Console.WriteLine($"Bind criado para tópico: {topico}");
+            }
+
+            // Configura o consumidor
+            var consumer = new AsyncEventingBasicConsumer(channel);
+            consumer.ReceivedAsync += async (model, ea) =>
+            {
+                var body = ea.Body.ToArray();
+                var mensagem = Encoding.UTF8.GetString(body);
+                Console.WriteLine($"Mensagem recebida do tópico '{ea.RoutingKey}': {mensagem}"); 
+            //    await notificacaoChannel.Writer.WriteAsync($"[{ea.RoutingKey}] {mensagem}");
+            Pedido pedido = JsonSerializer.Deserialize<Pedido>(mensagem);
+
+            if (pedido != null)
+            {
+                // Verifica o tópico e processa de acordo com a chave de roteamento
+                switch (ea.RoutingKey)
+                {
+                    case "Pagamentos-Aprovados":
+                        Console.WriteLine("Processando pagamento aprovado.");
+                        // Ação para pagamentos aprovados
+                        break;
+
+                    case "Pagamentos-Recusados":
+                        Console.WriteLine("Processando pagamento recusado.");
+                        // Ação para pagamentos recusados
+                        break;
+
+                    case "Pedidos-Enviados":
+                        Console.WriteLine("Processando pedido enviado.");
+                        // Ação para pedidos enviados
+                        break;
+
+                    default:
+                        Console.WriteLine($"Tópico desconhecido: {ea.RoutingKey}");
+                        break;
+                }
+            }
+
+            await Task.CompletedTask; // Indica que o processamento foi concluído
+            };
+
+            // Inicia o consumo da fila
+            await channel.BasicConsumeAsync(
+                queue: queueName,      // Usa o nome correto da fila gerada automaticamente
+                autoAck: true,         // Confirmação automática
+                consumer: consumer
+            );
+
+            Console.WriteLine("Consumindo mensagens...");
+            await Task.Delay(-1); // Mantém o consumidor ativo indefinidamente
+            
+        }
         
 }

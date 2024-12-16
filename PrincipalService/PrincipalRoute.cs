@@ -18,7 +18,7 @@ public static class PrincipalRoute
 
     static PrincipalRoute()
     {
-        
+        RabbitMqHelper.ConsumerPrincipal(pedidos);
     }
     
     
