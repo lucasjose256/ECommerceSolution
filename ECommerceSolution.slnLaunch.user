@@ -13,6 +13,14 @@
       {
         "Path": "PagamentoService\\PagamentoService.csproj",
         "Action": "Start"
+      },
+      {
+        "Path": "EntregaService\\EntregaService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "NotificacaoService\\NotificacaoService.csproj",
+        "Action": "Start"
       }
     ]
   }

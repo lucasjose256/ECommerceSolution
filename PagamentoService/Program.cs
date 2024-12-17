@@ -32,8 +32,7 @@ app.UseCors("AllowAllOrigins");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
 }
 
 List<Pedido> pedidosChanel =new List<Pedido>();
@@ -73,7 +72,8 @@ app.MapPost("/pagamento/{id}", async (int id, [FromBody] Pagamento pagamento) =>
         var webhookData = new
         {
             PedidoId = pedidoEncontrado.PedidoId,
-            Status = statusPagamento
+            Status = statusPagamento,
+            Valor = pagamento.Valor,
         };
 
         var content = new StringContent(JsonSerializer.Serialize(webhookData), Encoding.UTF8, "application/json");

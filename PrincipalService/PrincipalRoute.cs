@@ -13,10 +13,13 @@ namespace PrincipalService;
 public static class PrincipalRoute
 {
     public static List<ItemPedido> cart = new List<ItemPedido>();
+    public static List<NotaFiscal> notasFiscais = new List<NotaFiscal>();
     public static List<Produto> produtos = new List<Produto>();
     public static List<Pedido> pedidos = new List<Pedido>();
     public static Channel<Pedido> pedidosChannel = Channel.CreateUnbounded<Pedido>();
     static int idCounter = 1;
+
+    //public static List<NotaFiscal> NotasFiscais { get => notasFiscais; set => notasFiscais = value; }
 
     static PrincipalRoute()
     {
@@ -34,7 +37,7 @@ public static class PrincipalRoute
             if (pedidoExistente != null)
             {
                 pedidoExistente.Status = pedido.Status;  
-         Console.WriteLine($"Pedido {pedido.PedidoId} atualizado com o status {pedido.Status}. Total de pedidos na lista: {listaDePedidos.Count}");
+                Console.WriteLine($"Pedido {pedido.PedidoId} atualizado com o status {pedido.Status}. Total de pedidos na lista: {listaDePedidos.Count}");
             }
             else
             {
@@ -161,24 +164,23 @@ public static class PrincipalRoute
             return Results.Ok(pedido);
         });
 
-        app.MapDelete("/pedidos/{id}", (int id) =>
+        app.MapDelete("/pedidos/{id}", async (int id) =>
         {
             var pedido = pedidos.FirstOrDefault(p => p.PedidoId == id);
             if (pedido is null) return Results.NotFound("Pedido não encontrado.");
 
+
+            string pedidoJson = JsonSerializer.Serialize(pedido);
+            await Task.Delay(2000);
+            await RabbitMqHelper.Publish("Pedidos-Excluidos", pedidoJson);
+
             pedidos.Remove(pedido);
-            //    PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
+
 
             return Results.NoContent();
         });
-        string ProcessarPagamentoAleatoriamente()
-        {
-            var random = new Random();
-            // 50% de chance de pagamento aprovado ou recusado
-            return random.Next(2) == 0 ? "Aprovado" : "Recusado";
-        }
 
-        app.MapPost("/pagamentos/{id}", async (int id, [FromBody] Pagamento pagamento) =>
+        /*app.MapPost("/pagamentos/{id}", async (int id, [FromBody] Pagamento pagamento) =>
         {
             // Find the corresponding pedido
             var pedidoEncontrado = pedidos.FirstOrDefault(p => p.PedidoId == id);
@@ -208,8 +210,15 @@ public static class PrincipalRoute
 
             if (statusPagamento == "aprovado")
             {
+                notasFiscais.Add(new NotaFiscal
+                {
+                    Id = pedidoEncontrado.PedidoId,
+                    Nome = "Rodrigo",
+                    Preco = pagamento.Valor,
+                    Endereco = "Avenida Sete de Setembro 3195",
+                    CNPJ = "75.101.873/0008-66"
+                });
                 await RabbitMqHelper.Publish("Pagamentos-Aprovados", $"{pedidoJson}");
-
             }
             else if (statusPagamento == "recusado")
             {
@@ -224,7 +233,7 @@ public static class PrincipalRoute
                 Status = pedidoEncontrado.Status,
                 Valor = pagamento.Valor
             });
-        });
+        });*/
 
         app.MapPost("/webhook/pagamento/{id}", async (HttpContext context) =>
         {
@@ -244,6 +253,14 @@ public static class PrincipalRoute
             // Publica o pagamento no RabbitMQ
             if (webhookRequest.Status == "aprovado")
             {
+                notasFiscais.Add(new NotaFiscal
+                {
+                    Id = pedidoEncontrado.PedidoId,
+                    Nome = "Rodrigo",
+                    Preco = webhookRequest.Valor,
+                    Endereco = "Avenida Sete de Setembro 3195",
+                    CNPJ = "75.101.873/0008-66"
+                });
                 await RabbitMqHelper.Publish("Pagamentos-Aprovados", pedidoJson);
             }
             else if (webhookRequest.Status == "recusado")
@@ -251,6 +268,16 @@ public static class PrincipalRoute
                 await RabbitMqHelper.Publish("Pagamentos-Recusados", pedidoJson);
             }
             return Results.Ok(new { mensagem = "Webhook processado com sucesso." });
+        });
+
+        app.MapGet("/notasfiscais", () =>
+        {
+            Console.WriteLine("Notas Fiscais:");
+            foreach (var nota in notasFiscais)
+            {
+                Console.WriteLine(JsonSerializer.Serialize(nota));
+            }
+            return notasFiscais;
         });
 
 

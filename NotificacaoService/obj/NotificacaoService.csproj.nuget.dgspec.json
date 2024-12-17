@@ -1,26 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/NotificacaoService/NotificacaoService.csproj": {}
+    "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\NotificacaoService\\NotificacaoService.csproj": {}
   },
   "projects": {
-    "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/Classes.csproj": {
+    "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\Classes\\Classes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/Classes.csproj",
+        "projectUniqueName": "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\Classes\\Classes.csproj",
         "projectName": "Classes",
-        "projectPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/Classes.csproj",
-        "packagesPath": "/Users/lucasbarszcz/.nuget/packages/",
-        "outputPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/obj/",
+        "projectPath": "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\Classes\\Classes.csproj",
+        "packagesPath": "C:\\Users\\ichib\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\Classes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/lucasbarszcz/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\ichib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -83,35 +85,37 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/NotificacaoService/NotificacaoService.csproj": {
+    "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\NotificacaoService\\NotificacaoService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/NotificacaoService/NotificacaoService.csproj",
+        "projectUniqueName": "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\NotificacaoService\\NotificacaoService.csproj",
         "projectName": "NotificacaoService",
-        "projectPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/NotificacaoService/NotificacaoService.csproj",
-        "packagesPath": "/Users/lucasbarszcz/.nuget/packages/",
-        "outputPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/NotificacaoService/obj/",
+        "projectPath": "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\NotificacaoService\\NotificacaoService.csproj",
+        "packagesPath": "C:\\Users\\ichib\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\NotificacaoService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/lucasbarszcz/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\ichib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "/usr/local/share/dotnet/library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/Classes.csproj": {
-                "projectPath": "/Users/lucasbarszcz/RiderProjects/ECommerceSolution/Classes/Classes.csproj"
+              "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\Classes\\Classes.csproj": {
+                "projectPath": "C:\\Users\\ichib\\source\\repos\\outro\\ECommerceSolution\\Classes\\Classes.csproj"
               }
             }
           }
@@ -177,7 +181,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

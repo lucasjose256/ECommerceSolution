@@ -54,7 +54,7 @@ public static class RabbitMqHelper
 }
      public static async Task ConsumeMessageEstoque(List<Produto> produtosLista)
     {
-        string[] topicos = { "Pedidos-Criados", "Pagamentos-Recusados"};
+        string[] topicos = { "Pedidos-Criados", "Pagamentos-Recusados", "Pedidos-Excluidos" };
         var factory = new ConnectionFactory { HostName = "localhost" };
 
         await using var connection = await factory.CreateConnectionAsync();
@@ -98,7 +98,11 @@ public static class RabbitMqHelper
                             {
                                 AtualizarEstoque(produto, item.Quantidade, false);
                             }
-                            else if (routingKeyReceived == "Pagamentos-Recusados")
+                            /*else if (routingKeyReceived == "Pagamentos-Recusados")
+                            {
+                                AtualizarEstoque(produto, item.Quantidade, true);
+                            }*/
+                            else if (routingKeyReceived == "Pedidos-Excluidos")
                             {
                                 AtualizarEstoque(produto, item.Quantidade, true);
                             }
@@ -328,6 +332,7 @@ public static class RabbitMqHelper
                         pedido.Status="recusado";
                         pedidoChanel.Writer.TryWrite(pedido);
                         Console.WriteLine("Processando pagamento recusado.");
+                        Publish("Pedidos-Excluidos", JsonSerializer.Serialize(pedido));
                         break;
 
                     case "Pedidos-Enviados":

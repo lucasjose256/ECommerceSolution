@@ -22,8 +22,7 @@ app.UseCors("AllowAllOrigins");
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+
 }
 
 app.PrincipalRoutes(app.Services.GetRequiredService<HttpClient>());
