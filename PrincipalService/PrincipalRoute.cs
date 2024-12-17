@@ -18,9 +18,6 @@ public static class PrincipalRoute
     public static List<Pedido> pedidos = new List<Pedido>();
     public static Channel<Pedido> pedidosChannel = Channel.CreateUnbounded<Pedido>();
     static int idCounter = 1;
-
-    //public static List<NotaFiscal> NotasFiscais { get => notasFiscais; set => notasFiscais = value; }
-
     static PrincipalRoute()
     {
         RabbitMqHelper.ConsumerPrincipal(pedidosChannel);
@@ -31,7 +28,6 @@ public static class PrincipalRoute
     {
         await foreach (var pedido in notificacaoChannel.Reader.ReadAllAsync())
         {
-            // Aqui, vamos procurar o pedido na lista e, se encontrado, atualizá-lo.
             Pedido pedidoExistente = listaDePedidos.FirstOrDefault(p => p.PedidoId == pedido.PedidoId);
             
             if (pedidoExistente != null)
@@ -49,15 +45,11 @@ public static class PrincipalRoute
 
     public static void PrincipalRoutes(this WebApplication app, HttpClient httpClient)
     {
-        // Endpoint para carregar produtos da API externa
         app.MapGet("/produtos", async () =>
         {
             try
             {
-                // Realiza a requisição para a API externa
                 var response = await httpClient.GetAsync("http://localhost:5275/estoque");
-
-                // Verifica se a resposta foi bem-sucedida
                 if (response.IsSuccessStatusCode)
                 {
                     produtos = await response.Content.ReadFromJsonAsync<List<Produto>>();
@@ -87,8 +79,6 @@ public static class PrincipalRoute
             }
             produto.Estoque -= item.Quantidade;
             //chamar a api de estoque para mudar o valor
-            //ou usar os eventos
-            // Busca se o item já existe no carrinho
             var itemExistente = cart.FirstOrDefault(c => c.ProdutoId == item.ProdutoId);
 
             if (itemExistente != null)
@@ -115,7 +105,6 @@ public static class PrincipalRoute
 
             cart.Remove(item);
             //PublishToQueue("Pedidos_Cancelados", JsonSerializer.Serialize(pedido));
-
             return Results.NoContent();
         });
         app.MapGet("/cart", () =>
@@ -136,8 +125,6 @@ public static class PrincipalRoute
         app.MapPost("/criar-pedido", async (Pedido novoPedido) =>
         {
             //precisa alterar a logica do contador pq ele modifica o id e cria outro intem na lista
-
-
             novoPedido.PedidoId = idCounter++;
             novoPedido.DataPedido = DateTime.Now;
             novoPedido.Status = "criado";
@@ -180,60 +167,6 @@ public static class PrincipalRoute
             return Results.NoContent();
         });
 
-        /*app.MapPost("/pagamentos/{id}", async (int id, [FromBody] Pagamento pagamento) =>
-        {
-            // Find the corresponding pedido
-            var pedidoEncontrado = pedidos.FirstOrDefault(p => p.PedidoId == id);
-            if (pedidoEncontrado is null)
-                return Results.NotFound(new { mensagem = "Pedido não encontrado." });
-
-            // Randomize payment status
-            string statusPagamento = new Random().Next(2) == 0 ? "aprovado" : "recusado";
-
-            // Update pedido status based on payment result
-            pedidoEncontrado.Status = statusPagamento;
-
-            // Log received payment details
-            Console.WriteLine($"Pagamento recebido:");
-            Console.WriteLine($"Nome: {pagamento.Nome}");
-            Console.WriteLine($"Endereço: {pagamento.Endereco}");
-            Console.WriteLine($"Status: {statusPagamento}");
-            Console.WriteLine($"Valor: {pagamento.Valor}");
-
-            //string pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
-            //cart.Clear();
-            //await RabbitMqHelper.Publish("Pedidos-Criados", $"{pedidoJson}");
-
-            String pedidoJson = JsonSerializer.Serialize(pedidoEncontrado);
-            //cart.Clear();
-            Task.Delay(2000).Wait();
-
-            if (statusPagamento == "aprovado")
-            {
-                notasFiscais.Add(new NotaFiscal
-                {
-                    Id = pedidoEncontrado.PedidoId,
-                    Nome = "Rodrigo",
-                    Preco = pagamento.Valor,
-                    Endereco = "Avenida Sete de Setembro 3195",
-                    CNPJ = "75.101.873/0008-66"
-                });
-                await RabbitMqHelper.Publish("Pagamentos-Aprovados", $"{pedidoJson}");
-            }
-            else if (statusPagamento == "recusado")
-            {
-                await RabbitMqHelper.Publish("Pagamentos-Recusados", $"{pedidoJson}");
-
-            }
-
-
-            return Results.Ok(new
-            {
-                PedidoId = pedidoEncontrado.PedidoId,
-                Status = pedidoEncontrado.Status,
-                Valor = pagamento.Valor
-            });
-        });*/
 
         app.MapPost("/webhook/pagamento/{id}", async (HttpContext context) =>
         {
