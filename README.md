@@ -33,8 +33,7 @@ Estoque	Gerencia o estoque. Atualiza estoque conforme pedidos criados ou excluí
 Pagamento	Integração com sistema externo via Webhook. Publica eventos de pagamento aprovado/recusado.
 Entrega	Emite nota fiscal e gerencia o envio de produtos.
 Notificação	Envia atualizações para o frontend usando SSE.
-Sistema de Mensageria
-[Tecnologia usada, por exemplo: RabbitMQ, Kafka]
+Sistema de Mensageria(RabbitMQ)
 
 Comunicação assíncrona entre microsserviços através de tópicos.
 
